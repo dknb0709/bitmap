@@ -50,8 +50,9 @@ struct Image {
 
 class Bitmap {
  public:
-  Bitmap() {}
-  virtual ~Bitmap() {}
+  Bitmap(const std::string& path) { load(path); }
+  Bitmap(int w, int h) { m_image = new Image(w, h); }
+  virtual ~Bitmap() { delete m_image; }
 
   void load(const std::string& path) {
     std::ifstream fin(path, std::ios::binary);
@@ -138,13 +139,15 @@ class Bitmap {
   Color getColor(int x, int y) {
     int w = m_image->w;
     int h = m_image->h;
-    return m_image->data[x + w * y];
+    if (x < 0 || x > w || y < 0 || y > h) return Color{0, 0, 0};
+    return m_image->getPixel(x, y);
   }
 
   void setColor(int x, int y, Color c) {
     int w = m_image->w;
     int h = m_image->h;
-    m_image->data[x + w * y] = c;
+    if (x < 0 || x > w || y < 0 || y > h) return;
+    m_image->setPixel(x, y, c);
   }
 
  private:
