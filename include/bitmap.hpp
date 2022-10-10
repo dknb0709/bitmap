@@ -1,8 +1,6 @@
 #pragma once
 
 #include <fstream>
-#include <iostream>
-#include <string>
 
 static const unsigned int BITMAP_FILE_HEADER_SIZE = 14;
 static const unsigned int BITMAP_INFO_HEADER_SIZE = 40;
@@ -41,8 +39,8 @@ struct Image {
   Image(int w, int h) : w{w}, h{h} { data = new Color[w * h]; }
   virtual ~Image() { delete data; }
 
-  Color getPixel(int x, int y) { return data[x + w * y]; }
-  void setPixel(int x, int y, Color c) { data[x + w * y] = c; }
+  Color getColor(int x, int y) { return data[x + w * y]; }
+  void setColor(int x, int y, Color c) { data[x + w * y] = c; }
 
   Color* data;
   int w, h;
@@ -140,14 +138,14 @@ class Bitmap {
     int w = m_image->w;
     int h = m_image->h;
     if (x < 0 || x > w || y < 0 || y > h) return Color{0, 0, 0};
-    return m_image->getPixel(x, y);
+    return m_image->getColor(x, y);
   }
 
   void setColor(int x, int y, Color c) {
     int w = m_image->w;
     int h = m_image->h;
     if (x < 0 || x > w || y < 0 || y > h) return;
-    m_image->setPixel(x, y, c);
+    m_image->setColor(x, y, c);
   }
 
  private:
